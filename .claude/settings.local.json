@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker compose:*)",
+      "Bash(rm -f nakama-data/modules/tictactoe.js)",
+      "Bash(npm run:*)",
+      "Bash(curl -s \"https://raw.githubusercontent.com/heroiclabs/nakama/v3.21.1/server/runtime_javascript.go\")",
+      "Bash(curl -s \"https://api.github.com/repos/heroiclabs/nakama/contents/server?ref=v3.21.1\")",
+      "Bash(curl -s https://raw.githubusercontent.com/heroiclabs/nakama/v3.21.1/server/runtime_javascript.go)"
+    ]
+  }
+}

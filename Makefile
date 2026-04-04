@@ -2,7 +2,7 @@
 # Makefile – convenience targets for the TicTacToe Nakama backend
 ###############################################################################
 
-.PHONY: install build typecheck dev stop restart logs shell-nakama shell-db clean deploy test-install test test-validation test-all
+.PHONY: install build typecheck dev stop restart logs shell-nakama shell-db clean deploy test-install test test-validation test-player-left test-all web-install web-build web-dev
 
 # ── TypeScript module ──────────────────────────────────────────────────────────
 
@@ -70,11 +70,26 @@ test-validation: test-install
 	@echo "Running move validation tests..."
 	cd test && npm run test:validation
 
-test-all: test test-validation
+test-player-left: test-install
+	@echo "Running PLAYER_LEFT disconnect test..."
+	cd test && npm run test:player-left
+
+test-all: test test-validation test-player-left
 
 # ── Cleanup ────────────────────────────────────────────────────────────────────
 
 clean:
 	docker compose down -v
-	rm -f nakama-data/modules/tictactoe.js
+	rm -f nakama-data/modules/index.js
 	@echo "Cleaned up containers, volumes, and built module."
+
+# ── Web client ────────────────────────────────────────────────────────────────
+
+web-install:
+	cd web && npm install
+
+web-build: web-install
+	cd web && npm run build
+
+web-dev: web-install
+	cd web && npm run dev

@@ -1,0 +1,54 @@
+###############################################################################
+# docker-compose.prod.yml  –  PRODUCTION (DigitalOcean / any cloud VM)
+#
+# Copy .env.example to .env and fill in values before deploying.
+# Deploy: make deploy
+###############################################################################
+
+services:
+
+  postgres:
+    image: postgres:16-alpine
+    platform: linux/amd64
+    container_name: tictactoe-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  nakama:
+    image: heroiclabs/nakama:3.21.1
+    platform: linux/amd64
+    container_name: tictactoe-nakama
+    depends_on:
+      postgres:
+        condition: service_healthy
+    entrypoint:
+      - "/bin/sh"
+      - "-ecx"
+      - "/nakama/nakama migrate up --database.address ${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME} && exec /nakama/nakama --name nakama1 --database.address ${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME} --runtime.path /nakama/data/modules --runtime.http_key ${NAKAMA_HTTP_KEY} --console.username ${NAKAMA_CONSOLE_USERNAME} --console.password ${NAKAMA_CONSOLE_PASSWORD} --logger.level INFO --session.token_expiry_sec 3600 --session.refresh_token_expiry_sec 2592000"
+    volumes:
+      - ./nakama-data/modules:/nakama/data/modules:ro
+    ports:
+      - "7349:7349"
+      - "7350:7350"
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7350/"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  postgres-data:

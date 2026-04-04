@@ -1,0 +1,15 @@
+{
+  "name": "tictactoe-nakama-tests",
+  "version": "1.0.0",
+  "description": "Integration tests for the Nakama TicTacToe backend",
+  "type": "module",
+  "scripts": {
+    "test": "node integration.js",
+    "test:validation": "node validation.js",
+    "test:player-left": "node player_left.js"
+  },
+  "dependencies": {
+    "@heroiclabs/nakama-js": "^2.7.0",
+    "ws": "^8.17.0"
+  }
+}

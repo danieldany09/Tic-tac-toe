@@ -1,0 +1,14 @@
+{
+  "name": "tictactoe-nakama-backend",
+  "version": "1.0.0",
+  "description": "Server-authoritative Tic-Tac-Toe runtime module for Nakama",
+  "scripts": {
+    "build": "node build.js",
+    "watch": "node build.js --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "esbuild": "^0.20.2",
+    "typescript": "^5.4.5"
+  }
+}
