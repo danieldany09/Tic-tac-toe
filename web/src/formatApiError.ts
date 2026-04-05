@@ -1,6 +1,9 @@
 /** Nakama / fetch failures sometimes reject with a Response, not an Error. */
 export async function formatApiError(e: unknown): Promise<string> {
   if (e instanceof Error) return e.message;
+  if (typeof Event !== 'undefined' && e instanceof Event) {
+    return 'Connection lost — retrying…';
+  }
   if (typeof Response !== 'undefined' && e instanceof Response) {
     let body = '';
     try {
