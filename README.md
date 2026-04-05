@@ -364,23 +364,17 @@ make test-all
 
 ### Manual Testing (Production)
 
-1. Open [tic-tac-toe-zeta-roan.vercel.app](https://tic-tac-toe-zeta-roan.vercel.app/) in **two separate tabs** — each tab automatically gets a unique player identity
-2. Enter a different nickname in each tab
-3. Click **"Find Match"** in both tabs
-4. Play and verify real-time multiplayer works across the internet
-
-> **How multi-tab identity works:** Each browser tab generates a unique device ID using `sessionStorage` (which is isolated per tab). This means opening multiple tabs in the **same browser** creates separate players — no need for incognito or a second browser.
->
-> **Incognito mode** provides a fully clean session (fresh `localStorage` + `sessionStorage`), which is useful if you want to test as a completely new user with no prior stored nickname or match history. In a normal browser window, your nickname and device ID persist across page reloads via `localStorage`.
+1. Open [tic-tac-toe-zeta-roan.vercel.app](https://tic-tac-toe-zeta-roan.vercel.app/) in **two different browsers** or devices
+2. Enter nicknames and find a match
+3. Play and verify real-time multiplayer works across the internet
+4. **Tip:** Use incognito windows to test multiplayer across different tabs — each incognito window gets a completely fresh session and player identity
 
 ### Testing Reconnection
 
-1. Start a match between two players (two tabs)
-2. Close one tab mid-game
-3. Reopen a **new tab in the same browser window** (not incognito) — the stored device ID in `localStorage` allows the server to recognize the returning player
-4. Enter the same nickname and the player auto-rejoins the match within 10 minutes
-
-> **Why incognito won't work for reconnection:** Incognito creates a fresh `localStorage`, so the server sees it as a brand-new player with no active match history. Reconnection requires the same browser profile (normal window) to preserve the device ID.
+1. Start a match between two players
+2. Close one browser tab mid-game
+3. Reopen the app within 10 minutes
+4. The player should auto-rejoin the same match
 
 ---
 
